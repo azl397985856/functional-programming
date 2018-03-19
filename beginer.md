@@ -177,5 +177,37 @@ add本身接受两个参数，然后通过柯里化的方式将其编程接受�
 本节我们通过函数组合，将不同的函数组合形成各种不同的新的函数。
 
 函数组合就是将函数串联起来执行，将多个函数组合起来，一个函数的输出结果是另一个函数的输入参数，一旦第一个函数开始执行，就会像多米诺骨牌一样推导执行了。
-## Pointfree
 
+举个例子：
+```js
+const add = x => y => x + y;
+const addOne = add(1);
+const plus = x => y => x * y;
+const plusFive = plus(5);
+
+const addOneAndPlusFive = compose(plusFive, addOne)
+
+addOneAndPlusFive(3); // 20
+```
+
+上面的例子很简单，就是将addOne 和 plusFive 这两个函数给组合起来，形成了一个新的函数而已。
+类似的我们可以组合创造出无数的方法来。
+
+如下是redux的compose的实现，可以帮助大家理解它是怎么运作的。
+
+```js
+function compose(...funcs) {
+  if (funcs.length === 0) {
+    return arg => arg
+  }
+
+  if (funcs.length === 1) {
+    return funcs[0]
+  }
+
+  return funcs.reduce((a, b) => (...args) => a(b(...args)))
+}
+```
+如上使用reduce方法将函数累计到一起，形成一个新的函数。
+## Pointfree
+终于到了文章的重点了。
