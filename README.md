@@ -7,7 +7,7 @@
 
 ## 目录
 
-[函数式编程-入门]()
+[函数式编程-入门](https://github.com/azl397985856/functional-programming/blob/master/beginer.md)
 
 
 [函数式编程-进阶]()
