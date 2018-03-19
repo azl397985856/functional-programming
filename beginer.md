@@ -211,3 +211,85 @@ function compose(...funcs) {
 如上使用reduce方法将函数累计到一起，形成一个新的函数。
 ## Pointfree
 终于到了文章的重点了。
+
+其实前面已经提到了pointfree了。我们通过curry已经实现了pointfree风格。
+但是这并不是全部。事实上要实现pointfree除了借助curry，还需要将可变化的数据放在最后（data goes last）。
+
+前面的例子不足以解释这一点，我们举一个稍微复杂且贴近实际的例子：
+
+如下是后端返回的数据格式
+```json
+[{
+    "user": "lucifer",
+    "posts": [
+        { "title": "fun fun function", "contents": "..." },
+        { "title": "time slice", "contents": "..." }
+    ]
+}, {
+    "user": "lucifer",
+    "posts": [
+        { "title": "babel", "contents": "..." },
+        { "title": "webpack", "contents": "..." }
+    ]
+}, {
+    "user": "karl",
+    "posts": [
+        { "title": "ramda", "contents": "..." },
+        { "title": "lodash", "contents": "..." }
+    ]
+}]
+
+```
+我们需要做的就是找到所有lucifer的文章，并将其title打印出来。
+
+非函数式的写法：
+
+```js
+fetch(url)
+    .then(JSON.parse)
+    .then(datas => datas.filter(data => data.user === 'lucifer'))
+    .then(datas => datas.map(data => data.posts).reduce((pre, next) => pre.concat(next)))
+    .then(posts => posts.map(post => post.title))
+
+```
+函数式写法：
+
+```js
+// 这里为了演示，并没有将fetch这样的副作用函数进行包装
+fetch(url)
+    .then(JSON.parse)
+    .then(filter(compose(equals('lucifer'), get('user'))))
+    .then(chain(get('posts')))
+    .then(map(get('title')))
+```
+
+看到了嘛，整个过程我们没有提到data。 我们不需要提到data。
+代码精简了很多，逻辑纯粹了很多。
+
+上面用到了一个api`chain`， 可能不太好理解，我会在函数式编程-进阶部分讲解。
+现在你可以把它理解为将数组拍平，就好像我在非函数式写法中的那样。
+
+另一个比较难以理解的地方在于`filter(compose(equals('lucifer'), get('user')))`
+
+我们来看一下：
+
+```js
+// 这样的写法更容易理解，但是它不pointfree
+filter(data => equals(get('user')(data), 'lucifer'))
+
+// 等价于下面的写法（加法交换律）
+
+filter(data => equals('lucifer', get('user')(data)))
+
+// 等价于下面的写法（curry）
+filter(data => equals('lucifer')(get('user')(data)))
+
+// 把equal('lucifer') 看成f， get('user') 看成g
+// 上面的代码本质上是f(g(x)) 
+// 因此等价于下面的写法（compose）   f(g(x)) = compose(f, g)(X)
+filter(data => compose(equals('lucifer'), get('user'))(data)) 
+
+// 所有的形如 x => fn(x) 的代码都等价于 fn
+// 因此上面的代码等价于
+filter(compose(equals('lucifer'), get('user'))) 
+```
