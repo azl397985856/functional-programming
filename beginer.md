@@ -120,8 +120,51 @@ document.addEventListener("click", e => e);
 ```
 高阶函数大大提高了代码的抽象能力，进而提高了代码的复用率。
 通过传入不同的函数进而实现不同的效果，毫不夸张地讲，这种
-抽象非常强大。理解高阶函数对于理解函数式编程至关重要。
+抽象非常强大。理解高阶函数对于理解函数式编程至关重要，他是函数式编程中的基石。
 ## 柯里化
+柯里化（Currying）是把接受多个参数的函数变换成接受一个单一参数(最初函数的第一个参数)的函数，
+并且返回接受余下的参数且返回结果的新函数的技术。
+
+听起来比较拗口，让我们通过一个例子来看下。
+```js
+// 取出对象里面的属性, 简单起见，省略了校验逻辑
+const get = key => obj => obj[key]
+const getId = get("id")
+const getName = get("name")
+
+const data = {
+  id: 1,
+  name: 'lucifer'
+}
+getId(data); // 1
+getName(data); // lucifer
+```
+
+非柯里化版本
+
+```js
+const getByKey = (key, obj) => obj[key]
+
+// 繁琐
+const getId = data => getByKey("id", data);
+const getName = data => getByKey("name", data);
+
+const data = {
+  id: 1,
+  name: 'lucifer'
+}
+
+getId(data); // 1
+getName(data); // lucifer
+```
+
+由于非柯里化版本必须提供所有参数才能执行。
+因此构造出的getId和getName必须提供data。
+可能这个例子还不太明显，我们会在后面将pointfree部分举一个更复杂的例子。
+
+其实我们前面将高阶函数部分举的add的例子已经是柯里化了。
+add本身接受两个参数，然后通过柯里化的方式将其编程接受一个参数的函数，执行它，
+你得到了一个接受一个参数的值，再次执行，才会返回相加的结果。
 ## 组合
 ## pointfree
 
