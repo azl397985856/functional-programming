@@ -242,7 +242,7 @@ function compose(...funcs) {
 ```
 我们需要做的就是找到所有lucifer的文章，并将其title打印出来。
 
-非函数式的写法：
+非pointfree的写法：
 
 ```js
 fetch(url)
@@ -252,7 +252,7 @@ fetch(url)
     .then(posts => posts.map(post => post.title))
 
 ```
-函数式写法：
+pointfree的写法：
 
 ```js
 // 这里为了演示，并没有将fetch这样的副作用函数进行包装
@@ -293,3 +293,13 @@ filter(data => compose(equals('lucifer'), get('user'))(data))
 // 因此上面的代码等价于
 filter(compose(equals('lucifer'), get('user'))) 
 ```
+通过curry， compose，data goes last一系列技巧，我们写出了pointfree的
+代码。 pointfree风格是函数式编程中特别重要的概念。pointfree使得开发者写出的
+代码更加容易重用，仅仅面向逻辑，而将具体的数据抽离出来。而且直观上来讲，代码
+更加简洁。这还仅仅是一个小小的例子，现实中情况会复杂地多，其重要性不言而喻。
+
+## 总结
+本文从数学中的函数入手，讲述了函数式编程中的函数其实就是数学中的函数。
+接着我们讲述了纯函数以及其优点。然后我们讲述了函数式编程中的两个基础概念，curry和compose。
+最后阐述了pointfree的概念，并通过curry，compose，以及data goes last原则写出了一个pointfree风格的代码。
+
