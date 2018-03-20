@@ -36,7 +36,7 @@
 
 数学中的函数指的Javascript中的纯函数。
 
-> 这种说法不准确，因此纯函数并不是Javascript的术语，这里只是方便解释。
+> 这种说法不准确，因此纯函数并不是Javascript中的术语，这里只是方便解释。
 
 那么什么是纯函数？
 
@@ -296,7 +296,7 @@ fetch(url)
 // 这样的写法更容易理解，但是它不pointfree
 filter(data => equals(get('user')(data), 'lucifer'))
 
-// 等价于下面的写法（加法交换律）
+// 等价于下面的写法（交换律）
 
 filter(data => equals('lucifer', get('user')(data)))
 
