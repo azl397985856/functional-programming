@@ -172,6 +172,23 @@ add本身接受两个参数，然后通过柯里化的方式将其编程接受�
 这是由于js本身的语法决定的，对于scala，haskell等函数式语言，不存在这样的事情。
 因此我们通常使用一些函数式编程库帮我们简化成`getId('id', data)`的写法。
 当然这并不以为着getId就不柯里化了。这只是一个语法糖而已。
+
+一个简单的柯里化的js实现如下：
+
+```js
+function curry(fn) {
+  return function inner(...args) {
+    if(args.length < fn.length) {
+      return function(...innerArgs) {
+        return inner.apply(this, args.concat(innerArgs))
+      }
+    } 
+    return fn.apply(this, args)
+  }
+}
+
+```
+
 ## 组合
 通过柯里化我们将多个参数的函数变成只接受一个参数的高阶函数。
 本节我们通过函数组合，将不同的函数组合形成各种不同的新的函数。
