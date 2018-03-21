@@ -14,9 +14,10 @@
 
 答案是借助容器。
 ### 什么是容器
-### 有哪些容器
 
-#### Promise
+### 题外话-callback and cps
+### 有哪些容器
+#### Promise & Future
 #### IO
 在Haskell中叫做IO。而在scala中可能是Option/Some/None。
 
@@ -30,6 +31,42 @@ haskell getUsername :: IO String
 scala def getUsername: IO[String] = ???
 ## Monad
 1990s
+### compose
+回忆一下compose的写法：
+
+```js
+
+function compose(...funcs) {
+  if (funcs.length === 0) {
+    return arg => arg
+  }
+
+  if (funcs.length === 1) {
+    return funcs[0]
+  }
+
+  return funcs.reduce((a, b) => (...args) => a(b(...args)))
+}
+```
+compose promise
+```js
+function composePromise(...funcs) {
+  if (funcs.length === 0) {
+    return arg => arg
+  }
+
+  if (funcs.length === 1) {
+    return funcs[0]
+  }
+
+  return funcs.reduce((a, b) => (...args) => Promise.resolve(...args).then(b).then(a))
+}
+
+```
+> monad is callback
 ## ap
 
 ## 总结
+
+## 参考
+[from-callback-to-future-functor-monad](https://hackernoon.com/from-callback-to-future-functor-monad-6c86d9c16cb5)
