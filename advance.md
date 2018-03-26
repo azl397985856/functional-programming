@@ -209,7 +209,7 @@ Right.prototype.map = function(f) {
 
 我们可以用Either来实现一下上面的异常处理。
 
-```
+```js
 function readFile(filename) {
   return Either('filename shouldn't be empty!', filename)
 }
