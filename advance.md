@@ -113,6 +113,53 @@ JS中的Array也是一种BOX。 它同样提供了一种操作对象的方式map
 
 > 我们需要将之前的compose做一些小改变以适应异步操作
 
+### compose
+回忆一下compose的写法：
+
+```js
+
+function compose(...funcs) {
+  if (funcs.length === 0) {
+    return arg => arg
+  }
+
+  if (funcs.length === 1) {
+    return funcs[0]
+  }
+
+  return funcs.reduce((a, b) => (...args) => a(b(...args)))
+}
+```
+
+以compose promise为例：
+```js
+function composePromise(...funcs) {
+  if (funcs.length === 0) {
+    return arg => arg
+  }
+
+  if (funcs.length === 1) {
+    return funcs[0]
+  }
+
+  return funcs.reduce((a, b) => (...args) => Promise.resolve(...args).then(b).then(a))
+}
+
+function setTimeoutPromise(number, delay) {
+	return new Promise((resolve, reject) => {
+		setTimeout(() => {
+			console.log(number);
+			resolve()
+		}, delay)
+	})
+}
+
+const setTimeoutPromiseWithOne = curry(setTimeoutPromise)(1)
+const setTimeoutPromiseWithTwo = curry(setTimeoutPromise)(2)
+composePromise(setTimeoutPromiseWithTwo, setTimeoutPromiseWithOne)(2000) // 2s先输出1，4s之后输出2
+
+```
+可以看到我们可以将异步操作给组合起来。
 我们可以将函数柯里化，实现Promise.all的效果。
 
 可以说函数式编程对异步操作是很友好的，只是需要做一些小小的”把戏“。
@@ -172,38 +219,7 @@ readFile('./test.txt') // Right {__value: "./test.txt"}
 ```
 我们没有使用throw error，而是以一种更加温和更加纯粹的方式处理。
 
-### compose
-回忆一下compose的写法：
 
-```js
-
-function compose(...funcs) {
-  if (funcs.length === 0) {
-    return arg => arg
-  }
-
-  if (funcs.length === 1) {
-    return funcs[0]
-  }
-
-  return funcs.reduce((a, b) => (...args) => a(b(...args)))
-}
-```
-compose promise
-```js
-function composePromise(...funcs) {
-  if (funcs.length === 0) {
-    return arg => arg
-  }
-
-  if (funcs.length === 1) {
-    return funcs[0]
-  }
-
-  return funcs.reduce((a, b) => (...args) => Promise.resolve(...args).then(b).then(a))
-}
-
-```
 ## 处理异步
 那么如何处理异步呢？ 没错，我们再来引入一个容器，叫Task。
 Task的实现稍微复杂，在这里不再实现，大家可以自行查阅详细信息，如果你不想查，
