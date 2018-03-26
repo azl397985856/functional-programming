@@ -300,6 +300,6 @@ var httpPost = curry(http('post', '/path');
 可以看出我们的代码重用性非常强。
 
 ## 总结
-
+下一节我们来介绍monad，applicative，以及一些类型推导，集合方面的知识。
 ## 参考
 [from-callback-to-future-functor-monad](https://hackernoon.com/from-callback-to-future-functor-monad-6c86d9c16cb5)
