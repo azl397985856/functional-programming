@@ -113,7 +113,7 @@ JS中的Array也是一种BOX。 它同样提供了一种操作对象的方式map
 
 > 我们需要将之前的compose做一些小改变以适应异步操作
 
-### compose
+### compose Promsie
 回忆一下compose的写法：
 
 ```js
