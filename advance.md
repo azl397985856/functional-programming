@@ -250,7 +250,9 @@ fetchUserInfo(1001).map(getName).map(toUpperCase); // LUCIFER
 
 
 我们再来一个更加复杂的例子，
-我们需要读取本地文件，然后根据文件读取的内容去请求另外一个服务的数据。（以下例子摘自[mostly-adequate-guide](https://github.com/MostlyAdequate/mostly-adequate-guide），我稍加了修改。
+我们需要读取本地文件，然后根据文件读取的内容去请求另外一个服务的数据。以下例子摘自[mostly-adequate-guide](https://github.com/MostlyAdequate/mostly-adequate-guide）
+
+我稍加了修改。
 
 ```js
 //  upload :: String -> (String -> a) -> Void
