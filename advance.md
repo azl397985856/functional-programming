@@ -47,6 +47,8 @@ var reduce = curry(function(f, x, xs){
 
 > a b 虽然任意的类型，但是同一个类型签名中a类型和a类型一定是相同的，这点需要注意。
 
+更多关于类型签名记号的信息，可以查看[类型签名记号](https://github.com/fantasyland/fantasy-land#type-signature-notation)
+
 大家好好消化一下，再往后看哦～
 
 ## 再谈组合
@@ -104,6 +106,7 @@ JS中的Array也是一种BOX。 它同样提供了一种操作对象的方式map
 
 函数式编程中有很多functor， 比如option，future等，
 这样我们操作的所有的数据就可以链式调用了（因为它们实现了相同的契约-map）。
+实际上functor并不仅仅是盒子这么简单，它提供了一致的操作数据的方式，对外提供了简洁的api，对调用者隐藏了具体细节。
 
 如果我们需要处理异步呢？如果我们需要处理错误（其中又会涉及到分支处理）呢？
 
